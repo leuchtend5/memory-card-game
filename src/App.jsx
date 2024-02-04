@@ -6,6 +6,7 @@ import apiService from './ApiService';
 import LoadingScreen from './components/LoadingScreen';
 import loadingTimeout from './helpers/loadingTimeout';
 import resetCards from './helpers/resetCards';
+import Footer from './components/Footer';
 
 export default function App() {
   const [pokeData, setPokeData] = useState([]);
@@ -72,6 +73,7 @@ export default function App() {
             ))}
           </div>
         )}
+        <Footer />
       </div>
     </>
   );
