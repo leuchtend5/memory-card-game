@@ -16,13 +16,18 @@ export default function App() {
   const [pickedCard, setPickedCard] = useState([]);
   const [round, setRound] = useState(0);
   const [showCard, setShowCard] = useState([]);
+  const [toggleInstruction, setToggleInstruction] = useState(false);
+
+  function handleToggleInstruction() {
+    setToggleInstruction(!toggleInstruction);
+  }
 
   useEffect(() => {
     async function fetchData() {
       let dataArray = [];
       const totalPokeId = 721;
 
-      while (dataArray.length < 20) {
+      while (dataArray.length < 18) {
         const randomId = Math.floor(Math.random() * totalPokeId) + 1;
         const isUnique = !dataArray.some((id) => id === randomId);
 
@@ -58,12 +63,17 @@ export default function App() {
     resetCards(pokeData, setShowCard);
   }, [pokeData]);
 
+  function handleToggleBlur() {
+    setToggleInstruction(!toggleInstruction);
+  }
+
   return (
     <>
+      {toggleInstruction ? <div className="blur-bg" onClick={handleToggleBlur}></div> : null}
       <div className="main-container">
-        <Header />
+        <Header handleClickEvent={handleToggleInstruction} toggleInstruction={toggleInstruction} />
         <Score score={score} bestScore={bestScore} />
-        <div>Round {round}/10</div>
+        <div className="round">Round {round}/10</div>
         {loading ? (
           <LoadingScreen />
         ) : (
