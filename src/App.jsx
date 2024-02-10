@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import Card from './components/Card';
 import Score from './components/Score';
 import Header from './components/Header';
-import apiService from './ApiService';
+import apiService from './apiService';
 import LoadingScreen from './components/LoadingScreen';
 import loadingTimeout from './helpers/loadingTimeout';
 import resetCards from './helpers/resetCards';
