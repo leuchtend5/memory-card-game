@@ -7,6 +7,8 @@ import LoadingScreen from './components/LoadingScreen';
 import loadingTimeout from './helpers/loadingTimeout';
 import resetCards from './helpers/resetCards';
 import Footer from './components/Footer';
+import GameOver from './components/GameOver';
+import GameWinning from './components/GameWinning';
 
 export default function App() {
   const [pokeData, setPokeData] = useState([]);
@@ -17,6 +19,8 @@ export default function App() {
   const [round, setRound] = useState(0);
   const [showCard, setShowCard] = useState([]);
   const [toggleInstruction, setToggleInstruction] = useState(false);
+  const [toggleGameOver, setToggleGameOver] = useState(false);
+  const [toggleGameWinning, setToggleGameWinning] = useState(false);
 
   function handleToggleInstruction() {
     setToggleInstruction(!toggleInstruction);
@@ -45,10 +49,18 @@ export default function App() {
   }, []);
 
   function handleClickEvent(id) {
-    if (pickedCard.includes(id)) {
-      console.log('game over!');
+    if (round === 10) {
+      setToggleGameWinning(true);
       setPickedCard([]);
       setBestScore((prevScore) => Math.max(prevScore, score));
+      resetCards(pokeData, setShowCard);
+      setScore(0);
+      setRound(0);
+    } else if (pickedCard.includes(id)) {
+      setToggleGameOver(true);
+      setPickedCard([]);
+      setBestScore((prevScore) => Math.max(prevScore, score));
+      resetCards(pokeData, setShowCard);
       setScore(0);
       setRound(0);
     } else {
@@ -56,6 +68,7 @@ export default function App() {
       setScore((prevScore) => prevScore + 1);
       setRound((prev) => prev + 1);
       resetCards(pokeData, setShowCard);
+      setToggleGameOver(false);
     }
   }
 
@@ -64,12 +77,22 @@ export default function App() {
   }, [pokeData]);
 
   function handleToggleBlur() {
-    setToggleInstruction(!toggleInstruction);
+    if (toggleInstruction) {
+      setToggleInstruction(!toggleInstruction);
+    } else if (toggleGameOver) {
+      setToggleGameOver(!toggleGameOver);
+    } else {
+      setToggleGameWinning(!toggleGameWinning);
+    }
   }
 
   return (
     <>
-      {toggleInstruction ? <div className="blur-bg" onClick={handleToggleBlur}></div> : null}
+      {toggleInstruction || toggleGameOver || toggleGameWinning ? (
+        <div className="blur-bg" onClick={handleToggleBlur}></div>
+      ) : null}
+      {toggleGameOver ? <GameOver /> : null}
+      {toggleGameWinning ? <GameWinning /> : null}
       <div className="main-container">
         <Header handleClickEvent={handleToggleInstruction} toggleInstruction={toggleInstruction} />
         <Score score={score} bestScore={bestScore} />

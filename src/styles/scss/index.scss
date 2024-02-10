@@ -1,5 +1,7 @@
 @use 'modules/header';
 @use 'modules/instruction';
+@use 'modules/game-over';
+@use 'modules/game-winning';
 @use 'modules/main-content';
 @use 'modules/loading';
 @use 'modules/card';
@@ -53,4 +55,5 @@ body {
   background-color: rgba(0, 0, 0, 0.45);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
+  z-index: 2;
 }
